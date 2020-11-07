@@ -54,6 +54,6 @@ class Cart
   end
 
   def has_discounts?
-    find_discounts.count > 0
+    find_discounts.count > 0 if @contents.count > 0
   end
 end
