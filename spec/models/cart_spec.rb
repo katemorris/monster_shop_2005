@@ -7,7 +7,7 @@ RSpec.describe Cart do
       @brian = Merchant.create!(name: 'Brians Bagels', address: '125 Main St', city: 'Denver', state: 'CO', zip: 80218)
       @ogre = @megan.items.create!(name: 'Ogre', description: "I'm an Ogre!", price: 20, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaLM_vbg2Rh-mZ-B4t-RSU9AmSfEEq_SN9xPP_qrA2I6Ftq_D9Qw', inventory: 5 )
       @giant = @megan.items.create!(name: 'Giant', description: "I'm a Giant!", price: 50, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaLM_vbg2Rh-mZ-B4t-RSU9AmSfEEq_SN9xPP_qrA2I6Ftq_D9Qw', inventory: 2 )
-      @hippo = @brian.items.create!(name: 'Hippo', description: "I'm a Hippo!", price: 50, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaLM_vbg2Rh-mZ-B4t-RSU9AmSfEEq_SN9xPP_qrA2I6Ftq_D9Qw', inventory: 3 )
+      @hippo = @brian.items.create!(name: 'Hippo', description: "I'm a Hippo!", price: 50, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaLM_vbg2Rh-mZ-B4t-RSU9AmSfEEq_SN9xPP_qrA2I6Ftq_D9Qw', inventory: 13 )
       @cart = Cart.new({
         @ogre.id.to_s => 1,
         @giant.id.to_s => 2
@@ -22,7 +22,7 @@ RSpec.describe Cart do
     end
 
     describe "#add_item()" do
-      it '.it will add an item that doesnt exits' do
+      it '.it will add an item that doesnt exist' do
         @cart.add_item(@hippo.id.to_s)
 
         expect(@cart.contents).to eq({
@@ -32,7 +32,7 @@ RSpec.describe Cart do
           })
       end
 
-      it '.it will add an item that doesnt exits' do
+      it '.it will add an item that does exist' do
         @cart.add_item(@ogre.id.to_s)
 
         expect(@cart.contents).to eq({
@@ -79,5 +79,35 @@ RSpec.describe Cart do
       expect(@cart.inventory_check(@ogre)).to eq(true)
     end
 
+    it ".find_discounts" do
+      discount_10 = BulkDiscount.create!(name: "10 for 10", percent_off: 10, min_amount: 10, merchant_id: @brian.id)
+
+      expect(@cart.find_discounts).to eq([])
+
+      cart1 = Cart.new({
+        @hippo.id.to_s => 10
+        })
+
+      expect(cart1.find_discounts).to eq([discount_10])
+
+      cart2 = Cart.new({
+        @hippo.id.to_s => 9
+        })
+      expect(cart2.find_discounts).to eq([])
+    end
+
+    it ".has_discounts?" do
+      discount_10 = BulkDiscount.create!(name: "10 for 10", percent_off: 10, min_amount: 10, merchant_id: @brian.id)
+      cart1 = Cart.new({
+        @hippo.id.to_s => 10
+        })
+
+      expect(cart1.has_discounts?).to eq(true)
+
+      cart2 = Cart.new({
+        @hippo.id.to_s => 9
+        })
+      expect(cart2.has_discounts?).to eq(false)
+    end
   end
 end

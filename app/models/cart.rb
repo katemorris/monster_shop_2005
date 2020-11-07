@@ -3,6 +3,7 @@ class Cart
 
   def initialize(contents)
     @contents = contents
+    @discounts = []
   end
 
   def add_item(item)
@@ -43,4 +44,16 @@ class Cart
     @contents[item.id.to_s] < item.inventory
   end
 
+  def find_discounts
+    @contents.each do |item_id, quantity|
+      item = Item.find(item_id)
+      starters = BulkDiscount.where("bulk_discounts.merchant_id = #{item.merchant_id}")
+      @discounts << starters.select { |potential| potential.min_amount <= quantity }
+    end
+    @discounts.flatten!
+  end
+
+  def has_discounts?
+    find_discounts.count > 0
+  end
 end

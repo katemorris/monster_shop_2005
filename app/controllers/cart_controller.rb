@@ -22,7 +22,6 @@ class CartController < ApplicationController
     @items = cart.items
     if cart.has_discounts?
       flash.now[:success] = "Discounts applied!"
-      cart.apply_discounts
     end
   end
 
