@@ -7,7 +7,7 @@
       <%= link_to "Edit", edit_merchant_bulk_discount_path(discount) %> |
       <%= link_to "Delete", merchant_bulk_discount_path(discount), method: :delete %>
       <ul>
-        <li>Percent Off: <%= discount.percent_off %></li>
+        <li>Percent Off: <%= discount.percent_off %>%</li>
         <li>Minimum Amount: <%= discount.min_amount %></li>
       </ul>
     </p>
