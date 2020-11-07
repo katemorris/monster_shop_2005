@@ -48,5 +48,16 @@ RSpec.describe "As a merchant" do
       expect(page).to have_content(@discount_5.name)
       expect(page).to_not have_content(not_my_discount.name)
     end
+
+    it "I can delete a discount." do
+      visit merchant_bulk_discounts_path
+
+      within("#discount-#{@discount_5.id}") do
+        click_on "Delete"
+      end
+
+      expect(page).to have_content("Discount has been deleted.")
+      expect(current_path).to eq(merchant_bulk_discounts_path)
+    end
   end
 end
