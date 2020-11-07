@@ -1,0 +1,14 @@
+<center>
+  <%= form_with(model: @discount, url: url_path, local: true, method: method) do |f| %>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+
+    <%= f.label :percent_off %>
+    <%= f.number_field :percent_off %>
+
+    <%= f.label :min_amount %>
+    <%= f.number_field :min_amount %>
+
+    <%= f.submit %>
+  <% end %>
+</center>

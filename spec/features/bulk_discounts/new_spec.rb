@@ -19,18 +19,18 @@ RSpec.describe "As a merchant" do
 
       click_link "Add Bulk Discount"
 
-      fill_in :name, with: "New Year Deal"
-      fill_in :percent_off, with: 25
-      fill_in :min_amount, with: 10
+      fill_in :bulk_discount_name, with: "New Year Deal"
+      fill_in :bulk_discount_percent_off, with: 25
+      fill_in :bulk_discount_min_amount, with: 10
 
-      click_on "Create Bulk Discount"
+      click_on "Create Bulk discount"
 
       expect(page).to have_content("Discount created successfully!")
 
       discount = BulkDiscount.last
       expect(discount.name).to eq("New Year Deal")
       expect(discount.percent_off).to eq(25)
-      expect(discount.min_amount).to eq(20)
+      expect(discount.min_amount).to eq(10)
     end
 
     it "I can't add a discount without all data" do
@@ -38,52 +38,52 @@ RSpec.describe "As a merchant" do
 
       click_link "Add Bulk Discount"
 
-      fill_in :name, with: ""
-      fill_in :percent_off, with: 25
-      fill_in :min_amount, with: 10
+      fill_in :bulk_discount_name, with: ""
+      fill_in :bulk_discount_percent_off, with: 25
+      fill_in :bulk_discount_min_amount, with: 10
 
-      click_on "Create Bulk Discount"
+      click_on "Create Bulk discount"
 
-      expect(page).to have_content("Name cannot be blank")
+      expect(page).to have_content("Name can't be blank")
     end
 
     it "I can't add a discount with less than 1 percent off" do
-      visit new_merchant_bulk_discounts_path
+      visit new_merchant_bulk_discount_path
 
-      fill_in :name, with: "New Year Deal"
-      fill_in :percent_off, with: 0
-      fill_in :min_amount, with: 10
+      fill_in :bulk_discount_name, with: "New Year Deal"
+      fill_in :bulk_discount_percent_off, with: 0
+      fill_in :bulk_discount_min_amount, with: 10
 
-      click_on "Create Bulk Discount"
+      click_on "Create Bulk discount"
 
       expect(page).to have_content("Percent off must be greater than 0")
-
-      fill_in :percent_off, with: -1
-      click_on "Create Bulk Discount"
+      
+      fill_in :bulk_discount_percent_off, with: -1
+      click_on "Create Bulk discount"
       expect(page).to have_content("Percent off must be greater than 0")
 
-      fill_in :percent_off, with: 2
-      click_on "Create Bulk Discount"
+      fill_in :bulk_discount_percent_off, with: 2
+      click_on "Create Bulk discount"
       expect(page).to have_content("Discount created successfully!")
     end
 
     it "I can't add a discount with less than 1 minimum amount" do
-      visit new_merchant_bulk_discounts_path
+      visit new_merchant_bulk_discount_path
 
-      fill_in :name, with: "New Year Deal"
-      fill_in :percent_off, with: 25
-      fill_in :min_amount, with: 0
+      fill_in :bulk_discount_name, with: "New Year Deal"
+      fill_in :bulk_discount_percent_off, with: 25
+      fill_in :bulk_discount_min_amount, with: 0
 
-      click_on "Create Bulk Discount"
+      click_on "Create Bulk discount"
 
       expect(page).to have_content("Min amount must be greater than 0")
 
-      fill_in :min_amount, with: -1
-      click_on "Create Bulk Discount"
+      fill_in :bulk_discount_min_amount, with: -1
+      click_on "Create Bulk discount"
       expect(page).to have_content("Min amount must be greater than 0")
 
-      fill_in :min_amount, with: 2
-      click_on "Create Bulk Discount"
+      fill_in :bulk_discount_min_amount, with: 2
+      click_on "Create Bulk discount"
       expect(page).to have_content("Discount created successfully!")
     end
   end
