@@ -27,13 +27,13 @@ RSpec.describe "As a merchant" do
 
       expect(page).to have_link("Add Bulk Discount")
 
-      within("##{@discount_10.id}") do
+      within("#discount-#{@discount_10.id}") do
         expect(page).to have_content(@discount_10.name)
         expect(page).to have_link('Edit')
         expect(page).to have_link('Delete')
       end
 
-      within("##{@discount_5.id}") do
+      within("#discount-#{@discount_5.id}") do
         expect(page).to have_content(@discount_5.name)
         expect(page).to have_link('Edit')
         expect(page).to have_link('Delete')
