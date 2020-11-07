@@ -12,6 +12,7 @@ describe Merchant, type: :model do
   describe "relationships" do
     it {should have_many :items}
     it {should have_many :users}
+    it {should have_many :bulk_discounts}
     it {should have_many(:orders).through(:items)}
   end
 
