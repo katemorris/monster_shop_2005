@@ -1,20 +1,20 @@
 class Cart
-  attr_reader :contents
+  attr_reader :contents, :item_prices
 
-  def initialize(contents)
+  def initialize(contents, prices)
     @contents = contents
-    @item_prices = {}
+    @item_prices = prices
+  end
+
+  def add_item(item)
+    self.get_price(item)
+    @contents[item.id.to_s] = 0 if !@contents[item.id.to_s]
+    @contents[item.id.to_s] += 1
   end
 
   def get_price(item)
     @item_prices[item.id.to_s] = 0 if !@item_prices[item.id.to_s]
     @item_prices[item.id.to_s] = item.price
-  end
-
-  def add_item(item)
-    @contents[item.id.to_s] = 0 if !@contents[item.id.to_s]
-    @contents[item.id.to_s] += 1
-    get_price(item)
   end
 
   def remove_one(item)
@@ -37,12 +37,12 @@ class Cart
   end
 
   def subtotal(item)
-    item.price * @contents[item.id.to_s]
+    @item_prices[item.id.to_s] * @contents[item.id.to_s]
   end
 
   def total
     @contents.sum do |item_id,quantity|
-      Item.find(item_id).price * quantity
+      @item_prices[item_id] * quantity
     end
   end
 

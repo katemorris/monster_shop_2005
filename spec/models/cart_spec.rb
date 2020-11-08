@@ -12,6 +12,8 @@ RSpec.describe Cart do
         @ogre.id.to_s => 1,
         @giant.id.to_s => 2
         })
+      @cart.get_price(@ogre)
+      @cart.get_price(@giant)
     end
 
     it '.contents' do
@@ -67,11 +69,29 @@ RSpec.describe Cart do
 
     it '.total' do
       expect(@cart.total).to eq(120)
+
+      # When discounts present
+      discount_10 = BulkDiscount.create!(name: "10 for 10", percent_off: 10, min_amount: 10, merchant_id: @brian.id)
+      cart1 = Cart.new({
+        @hippo.id.to_s => 10
+        })
+      cart1.get_price(@hippo)
+      cart1.apply_discounts
+      expect(cart1.total).to eq(450)
     end
 
     it '.subtotal()' do
       expect(@cart.subtotal(@ogre)).to eq(20)
       expect(@cart.subtotal(@giant)).to eq(100)
+
+      # When discounts present
+      discount_10 = BulkDiscount.create!(name: "10 for 10", percent_off: 10, min_amount: 10, merchant_id: @brian.id)
+      cart1 = Cart.new({
+        @hippo.id.to_s => 10
+        })
+      cart1.get_price(@hippo)
+      cart1.apply_discounts
+      expect(cart1.subtotal(@hippo)).to eq(450)
     end
 
     it '.inventory_check(item)' do
