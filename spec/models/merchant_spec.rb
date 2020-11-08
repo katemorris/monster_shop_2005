@@ -38,15 +38,19 @@ describe Merchant, type: :model do
     end
 
     describe '#item_count' do
+      before(:each) do
+        @merchant = create(:merchant)
+        create(:item, merchant: @merchant)
+        create(:item, merchant: @merchant)
+        create(:item, merchant: @merchant)
+      end
       it 'returns the total number of a merchants unqiue items' do
-        merchant = create(:merchant, :with_items, item_count: 3)
-        expect(merchant.item_count).to eq(3)
+        expect(@merchant.item_count).to eq(3)
       end
 
       it 'only counts a single merchants items' do
-        merchant = create(:merchant, :with_items, item_count: 3)
         merchant_2 = create(:merchant, :with_items, item_count: 6)
-        expect(merchant_2.item_count).to eq(6)
+        expect(@merchant.item_count).to eq(3)
       end
     end
 
@@ -131,7 +135,10 @@ describe Merchant, type: :model do
 
     describe '#disable_items' do
       it 'disables all merchant items' do
-        merchant = create(:merchant, :with_items, item_count: 3)
+        merchant = create(:merchant)
+        item_1 = create(:item, merchant: merchant, active?: true)
+        item_2 = create(:item, merchant: merchant, active?: true)
+        item_3 = create(:item, merchant: merchant, active?: true)
 
         merchant.disable_items
         merchant.reload
@@ -162,17 +169,17 @@ describe Merchant, type: :model do
         item_2 = create(:item, merchant: merchant)
         item_3 = create(:item, merchant: merchant)
 
-        io_1 = create(:item_order, item: item_1)
-        io_2 = create(:item_order, item: item_2)
-        io_3 = create(:item_order, item: item_3)
+        order_1 = create(:order, status: 'pending')
+        order_2 = create(:order, status: 'pending')
+        order_3 = create(:order, status: 'pending')
 
-        order_1 = io_1.order
-        order_2 = io_2.order
-        order_3 = io_3.order
+        io_1 = create(:item_order, item: item_1, order: order_1)
+        io_2 = create(:item_order, item: item_2, order: order_2)
+        io_3 = create(:item_order, item: item_3, order: order_3)
 
         expected = [order_1, order_2, order_3]
 
-        expect(merchant.pending_orders).to eq(expected)
+        expect(merchant.pending_orders.sort).to eq(expected.sort)
       end
 
       it 'does not return orders that are not pending for a merchant' do
@@ -182,13 +189,12 @@ describe Merchant, type: :model do
         item_2 = create(:item, merchant: merchant)
         item_3 = create(:item, merchant: merchant)
         order_1 = create(:order, status: 'packaged')
+        order_2 = create(:order, status: 'pending')
+        order_3 = create(:order, status: 'pending')
 
         io_1 = create(:item_order, item: item_1, order: order_1)
-        io_2 = create(:item_order, item: item_2)
-        io_3 = create(:item_order, item: item_3)
-
-        order_2 = io_2.order
-        order_3 = io_3.order
+        io_2 = create(:item_order, item: item_2, order: order_2)
+        io_3 = create(:item_order, item: item_3, order: order_3)
 
         expected = [order_2, order_3]
 
