@@ -23,7 +23,7 @@ RSpec.describe Cart do
 
     describe "#add_item()" do
       it '.it will add an item that doesnt exist' do
-        @cart.add_item(@hippo.id.to_s)
+        @cart.add_item(@hippo)
 
         expect(@cart.contents).to eq({
           @ogre.id.to_s => 1,
@@ -33,7 +33,7 @@ RSpec.describe Cart do
       end
 
       it '.it will add an item that does exist' do
-        @cart.add_item(@ogre.id.to_s)
+        @cart.add_item(@ogre)
 
         expect(@cart.contents).to eq({
           @ogre.id.to_s => 2,
@@ -108,6 +108,49 @@ RSpec.describe Cart do
         @hippo.id.to_s => 9
         })
       expect(cart2.has_discounts?).to eq(false)
+    end
+
+    it ".apply_discounts" do
+      discount_10 = BulkDiscount.create!(name: "10 for 10", percent_off: 10, min_amount: 10, merchant_id: @brian.id)
+      cart1 = Cart.new({
+        @hippo.id.to_s => 10
+        })
+      cart1.get_price(@hippo)
+      expected = { @hippo.id.to_s => 45.0 }
+      expect(cart1.apply_discounts).to eq(expected)
+
+      cart2 = Cart.new({
+        @hippo.id.to_s => 9
+        })
+      cart2.get_price(@hippo)
+
+      normal = { @hippo.id.to_s => 50.0 }
+      expect(cart2.apply_discounts).to eq(normal)
+    end
+
+    it ".get_max_discount(set)" do
+      discount_10 = BulkDiscount.create!(name: "10 for 10", percent_off: 10, min_amount: 10, merchant_id: @brian.id)
+      discount_5 = BulkDiscount.create!(name: "5 for 5", percent_off: 5, min_amount: 5, merchant_id: @brian.id)
+      discounts = [discount_10, discount_5]
+
+      expect(@cart.get_max_discount(discounts)).to eq(discount_10)
+      expect(@cart.get_max_discount([discount_10])).to eq(discount_10)
+      # Not testing for 0 since it is controlled for in the place it is called.
+    end
+
+    it ".find_discount(item_id)" do
+      discount_10 = BulkDiscount.create!(name: "10 for 10", percent_off: 10, min_amount: 10, merchant_id: @brian.id)
+      cart1 = Cart.new({
+        @hippo.id.to_s => 10
+        })
+      cart1.get_price(@hippo)
+
+      expect(cart1.find_discount(@hippo.id.to_s)).to eq([discount_10])
+
+      discount_5 = BulkDiscount.create!(name: "5 for 5", percent_off: 5, min_amount: 5, merchant_id: @brian.id)
+      discounts = [discount_10, discount_5]
+
+      expect(cart1.find_discount(@hippo.id.to_s).sort).to eq(discounts.sort)
     end
   end
 end
