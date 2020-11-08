@@ -106,6 +106,10 @@ RSpec.describe 'Cart show' do
       expect(page).to have_content("10")
       expect(page).to have_content("$1.80")
 
+      click_on "-"
+      expect(page).to have_content("Total: $18.00")
+      expect(page).to have_content("9")
+      expect(page).to have_content("$2.00")
     end
   end
 end

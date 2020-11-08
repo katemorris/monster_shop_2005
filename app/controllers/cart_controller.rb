@@ -11,7 +11,7 @@ class CartController < ApplicationController
     if params[:type] == 'up'
       cart.add_item(item)
     elsif params[:type] == 'down'
-      cart.remove_one(item.id.to_s)
+      cart.remove_one(item)
     end
     flash.now[:success] = "#{item.name} was successfully updated"
     redirect_to '/cart'
@@ -23,6 +23,8 @@ class CartController < ApplicationController
     if cart.has_discounts?
       cart.apply_discounts
       flash.now[:success] = "Discounts applied!"
+    else
+
     end
   end
 

@@ -18,9 +18,12 @@ class Cart
   end
 
   def remove_one(item)
-    @contents[item] -= 1
-    if @contents[item] == 0
-      @contents.delete(item)
+    @contents[item.id.to_s] -= 1
+    if @contents[item.id.to_s] == 0
+      @contents.delete(item.id.to_s)
+    end
+    if find_discount(item.id.to_s).count == 0
+      get_price(item)
     end
   end
 
