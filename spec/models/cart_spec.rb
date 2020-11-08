@@ -54,14 +54,14 @@ RSpec.describe Cart do
     end
 
     it ".remove_one()" do
-      @cart.remove_one(@giant.id.to_s)
+      @cart.remove_one(@giant)
 
       expect(@cart.contents).to eq({
         @ogre.id.to_s => 1,
         @giant.id.to_s => 1
         })
 
-      @cart.remove_one(@giant.id.to_s)
+      @cart.remove_one(@giant)
 
       expect(@cart.contents).to eq({
         @ogre.id.to_s => 1

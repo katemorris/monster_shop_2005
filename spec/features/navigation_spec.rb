@@ -38,7 +38,7 @@ RSpec.describe 'Site Navigation' do
     end
 
     it "I can see a cart indicator on all pages" do
-      cart = Cart.new({})
+      cart = Cart.new({}, {})
 
       visit '/merchants'
 
