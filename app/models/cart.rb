@@ -81,10 +81,11 @@ class Cart
 
   def apply_discounts
     @item_prices.map do |item_id, price|
+      item = Item.find(item_id)
       starters = find_discount(item_id)
       if !starters.empty?
         discount = get_max_discount(starters).percent_off
-        @item_prices[item_id] = (price -= ((discount * 0.01) * price))
+        @item_prices[item_id] = (item.price -= ((discount * 0.01) * item.price))
       end
     end
     @item_prices
