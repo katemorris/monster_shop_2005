@@ -94,14 +94,6 @@ describe Order, type: :model do
         expect(@order_1.merchant_items(@meg.id)).to eq([@tire, @chew_toy])
         expect(@order_1.merchant_items(@brian.id)).to eq([@pull_toy])
       end
-
-      it "does not return items belonging to another merchant" do
-        @chew_toy = @meg.items.create(name: "Chew Toy", description: "Great chew toy!", price: 20, image: "http://lovencaretoys.com/image/cache/dog/tug-toy-dog-pull-9010_2-800x800.jpg", inventory: 15)
-        @item_order_3 = @order_1.item_orders.create!(item: @chew_toy, price: @chew_toy.price, quantity: 4)
-
-        expect(@order_1.merchant_items(@brian.id)).to_not eq([@tire, @chew_toy])
-        expect(@order_1.merchant_items(@meg.id)).to_not eq([@pull_toy])
-      end
     end
 
   end
