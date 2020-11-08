@@ -17,14 +17,22 @@ class Cart
     @item_prices[item.id.to_s] = item.price
   end
 
-  def remove_one(item)
-    @contents[item.id.to_s] -= 1
+  def check_for_removal(item)
     if @contents[item.id.to_s] == 0
       @contents.delete(item.id.to_s)
     end
+  end
+
+  def reset_price_check(item)
     if find_discount(item.id.to_s).count == 0
       get_price(item)
     end
+  end
+
+  def remove_one(item)
+    @contents[item.id.to_s] -= 1
+    check_for_removal(item)
+    reset_price_check(item)
   end
 
   def total_items
@@ -74,8 +82,10 @@ class Cart
   def get_max_discount(set)
     if set.count > 1
       set.max_by { |potential| potential.percent_off }
-    else
+    elsif set.count == 1
       set.first
+    else
+      return nil
     end
   end
 
