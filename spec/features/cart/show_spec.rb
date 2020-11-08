@@ -115,4 +115,42 @@ RSpec.describe 'Cart show' do
       end
     end
   end
+
+  describe "When I buy in bulk, I potentially see a discount." do
+    before(:each) do
+      @mike = Merchant.create(name: "Mike's Print Shop", address: '123 Paper Rd.', city: 'Denver', state: 'CO', zip: 80203)
+      @pencil = @mike.items.create(name: "Yellow Pencil", description: "You can write on paper with it!", price: 2, image: "https://images-na.ssl-images-amazon.com/images/I/31BlVr01izL._SX425_.jpg", inventory: 100)
+      @discount_10 = BulkDiscount.create!(name: "10 for 10", percent_off: 10, min_amount: 10, merchant_id: @mike.id)
+      visit "/items/#{@pencil.id}"
+      click_on "Add To Cart"
+      visit "/cart"
+      click_on "+"
+      click_on "+"
+      click_on "+"
+      click_on "+"
+      click_on "+"
+      click_on "+"
+      click_on "+"
+      click_on "+"
+    end
+    it "When I add enough items, the discount renders in the cart." do
+      expect(page).to_not have_content("Discounts applied!")
+      expect(page).to have_content("Total: $18.00")
+      expect(page).to have_content("9")
+      expect(page).to have_content("$2.00")
+
+      click_on "+"
+
+      expect(page).to have_content("Discounts applied!")
+      expect(page).to have_content("Total: $18.00")
+      expect(page).to_not have_content("$20.00")
+      expect(page).to have_content("10")
+      expect(page).to have_content("$1.80")
+
+      click_on "-"
+      expect(page).to have_content("Total: $18.00")
+      expect(page).to have_content("9")
+      expect(page).to have_content("$2.00")
+    end
+  end
 end
