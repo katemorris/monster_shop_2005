@@ -18,14 +18,18 @@ describe Merchant, type: :model do
 
   describe 'instance methods' do
     describe '#no_orders?' do
-      context 'when a merchant has no orders' do
+      context 'when a merchant has orders' do
         it 'returns false' do
-          merchant = create(:merchant, :with_item_orders)
+          merchant = create(:merchant)
+          item = create(:item, merchant_id: merchant.id)
+          user = create(:user)
+          order = create(:order, user_id: user.id)
+          create(:item_order, order_id: order.id, item_id: item.id)
           expect(merchant.no_orders?).to eq(false)
         end
       end
 
-      context 'when a merchant has orders' do
+      context 'when a merchant has no orders' do
         it 'returns true' do
           merchant = build(:merchant)
           expect(merchant.no_orders?).to eq(true)
@@ -79,10 +83,11 @@ describe Merchant, type: :model do
 
     describe '#distinct_cities' do
       it 'returns array of unique city names from items ordered' do
+        user = create(:user, email: 'testing@example.com')
         merchant = create(:merchant, :with_items)
-        order1 = create(:order, city: 'Hershey')
-        order2 = create(:order, city: 'Denver')
-        order3 = create(:order, city: 'Denver')
+        order1 = create(:order, city: 'Hershey', user_id: user.id)
+        order2 = create(:order, city: 'Denver', user_id: user.id)
+        order3 = create(:order, city: 'Denver', user_id: user.id)
         create(:item_order, item: merchant.items[0], order: order1)
         create(:item_order, item: merchant.items[0], order: order2)
         create(:item_order, item: merchant.items[0], order: order3)
