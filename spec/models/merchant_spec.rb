@@ -17,26 +17,6 @@ describe Merchant, type: :model do
   end
 
   describe 'instance methods' do
-    describe '#no_orders?' do
-      context 'when a merchant has orders' do
-        it 'returns false' do
-          merchant = create(:merchant)
-          item = create(:item, merchant_id: merchant.id)
-          user = create(:user)
-          order = create(:order, user_id: user.id)
-          create(:item_order, order_id: order.id, item_id: item.id)
-          expect(merchant.no_orders?).to eq(false)
-        end
-      end
-
-      context 'when a merchant has no orders' do
-        it 'returns true' do
-          merchant = build(:merchant)
-          expect(merchant.no_orders?).to eq(true)
-        end
-      end
-    end
-
     describe '#item_count' do
       before(:each) do
         @merchant = create(:merchant)
