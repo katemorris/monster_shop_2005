@@ -9,7 +9,7 @@ class CartController < ApplicationController
   def update
     item = Item.find(params[:item_id])
     if params[:type] == 'up'
-      cart.add_item(item.id.to_s)
+      cart.add_item(item)
     elsif params[:type] == 'down'
       cart.remove_one(item.id.to_s)
     end
