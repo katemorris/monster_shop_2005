@@ -3,15 +3,31 @@ require 'rails_helper'
 RSpec.describe "As a merchant" do
   describe "When I visit the bulk discounts index page" do
     before(:each) do
-      @brian = Merchant.create(name: "Brian's Dog Shop", address: '125 Doggo St.', city: 'Denver', state: 'CO', zip: 80210)
+      @brian = Merchant.create(
+        name: "Brian's Dog Shop",
+        address: '125 Doggo St.',
+        city: 'Denver',
+        state: 'CO',
+        zip: 80210
+      )
       user = create(:user, role: 1, merchant_id: @brian.id)
       visit login_path
       fill_in :email, with: user.email
       fill_in :password, with: 'password'
       click_button "Login"
 
-      @discount_10 = BulkDiscount.create!(name: "10 for 10", percent_off: 10, min_amount: 10, merchant_id: @brian.id)
-      @discount_5 = BulkDiscount.create!(name: "5 for 5", percent_off: 5, min_amount: 5, merchant_id: @brian.id)
+      @discount_10 = BulkDiscount.create!(
+        name: "10 for 10",
+        percent_off: 10,
+        min_amount: 10,
+        merchant_id: @brian.id
+      )
+      @discount_5 = BulkDiscount.create!(
+        name: "5 for 5",
+        percent_off: 5,
+        min_amount: 5,
+        merchant_id: @brian.id
+      )
     end
 
     it 'I click on the link to add a new discount and can add one.' do
@@ -57,7 +73,7 @@ RSpec.describe "As a merchant" do
       click_on "Create Bulk discount"
 
       expect(page).to have_content("Percent off must be greater than 0")
-      
+
       fill_in :bulk_discount_percent_off, with: -1
       click_on "Create Bulk discount"
       expect(page).to have_content("Percent off must be greater than 0")

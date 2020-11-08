@@ -4,12 +4,42 @@ RSpec.describe 'Cart show' do
   describe 'When I have added items to my cart' do
     describe 'and visit my cart path' do
       before(:each) do
-        @mike = Merchant.create(name: "Mike's Print Shop", address: '123 Paper Rd.', city: 'Denver', state: 'CO', zip: 80203)
-        @meg = Merchant.create(name: "Meg's Bike Shop", address: '123 Bike Rd.', city: 'Denver', state: 'CO', zip: 80203)
+        @mike = Merchant.create(
+          name: "Mike's Print Shop",
+          address: '123 Paper Rd.',
+          city: 'Denver',
+          state: 'CO',
+          zip: 80203
+        )
+        @meg = Merchant.create(
+          name: "Meg's Bike Shop",
+          address: '123 Bike Rd.',
+          city: 'Denver',
+          state: 'CO',
+          zip: 80203
+        )
 
-        @tire = @meg.items.create(name: "Gatorskins", description: "They'll never pop!", price: 100, image: "https://www.rei.com/media/4e1f5b05-27ef-4267-bb9a-14e35935f218?size=784x588", inventory: 12)
-        @paper = @mike.items.create(name: "Lined Paper", description: "Great for writing on!", price: 20, image: "https://cdn.vertex42.com/WordTemplates/images/printable-lined-paper-wide-ruled.png", inventory: 25)
-        @pencil = @mike.items.create(name: "Yellow Pencil", description: "You can write on paper with it!", price: 2, image: "https://images-na.ssl-images-amazon.com/images/I/31BlVr01izL._SX425_.jpg", inventory: 100)
+        @tire = @meg.items.create(
+          name: "Gatorskins",
+          description: "They'll never pop!",
+          price: 100,
+          image: "https://www.rei.com/media/4e1f5b05-27ef-4267-bb9a-14e35935f218?size=784x588",
+          inventory: 12
+        )
+        @paper = @mike.items.create(
+          name: "Lined Paper",
+          description: "Great for writing on!",
+          price: 20,
+          image: "https://cdn.vertex42.com/WordTemplates/images/printable-lined-paper-wide-ruled.png",
+          inventory: 25
+        )
+        @pencil = @mike.items.create(
+          name: "Yellow Pencil",
+          description: "You can write on paper with it!",
+          price: 2,
+          image: "https://images-na.ssl-images-amazon.com/images/I/31BlVr01izL._SX425_.jpg",
+          inventory: 100
+        )
         visit "/items/#{@paper.id}"
         click_on "Add To Cart"
         visit "/items/#{@tire.id}"
@@ -57,7 +87,13 @@ RSpec.describe 'Cart show' do
       end
 
       it 'Next to each item is a way to increase the amount of that item' do
-        ruler = @mike.items.create(name: "Ruler", description: "Measure away!", price: 1, image: "https://static6.depositphotos.com/1106005/640/i/450/depositphotos_6403604-stock-photo-wooden-ruler.jpg", inventory: 2)
+        ruler = @mike.items.create(
+          name: "Ruler",
+          description: "Measure away!",
+          price: 1,
+          image: "https://static6.depositphotos.com/1106005/640/i/450/depositphotos_6403604-stock-photo-wooden-ruler.jpg",
+          inventory: 2
+        )
         visit "/items/#{ruler.id}"
         click_on "Add To Cart"
 
@@ -118,14 +154,50 @@ RSpec.describe 'Cart show' do
 
   describe "When I buy in bulk, I can recieve a discount." do
     before(:each) do
-      @mike = Merchant.create(name: "Mike's Print Shop", address: '123 Paper Rd.', city: 'Denver', state: 'CO', zip: 80203)
-      @meg = Merchant.create(name: "Meg's Bike Shop", address: '123 Bike Rd.', city: 'Denver', state: 'CO', zip: 80203)
+      @mike = Merchant.create(
+        name: "Mike's Print Shop",
+        address: '123 Paper Rd.',
+        city: 'Denver',
+        state: 'CO',
+        zip: 80203
+      )
+      @meg = Merchant.create(
+        name: "Meg's Bike Shop",
+        address: '123 Bike Rd.',
+        city: 'Denver',
+        state: 'CO',
+        zip: 80203
+      )
 
-      @tire = @meg.items.create(name: "Gatorskins", description: "They'll never pop!", price: 100, image: "https://www.rei.com/media/4e1f5b05-27ef-4267-bb9a-14e35935f218?size=784x588", inventory: 12)
-      @paper = @mike.items.create(name: "Lined Paper", description: "Great for writing on!", price: 20, image: "https://cdn.vertex42.com/WordTemplates/images/printable-lined-paper-wide-ruled.png", inventory: 25)
-      @pencil = @mike.items.create(name: "Yellow Pencil", description: "You can write on paper with it!", price: 2, image: "https://images-na.ssl-images-amazon.com/images/I/31BlVr01izL._SX425_.jpg", inventory: 100)
+      @tire = @meg.items.create(
+        name: "Gatorskins",
+        description: "They'll never pop!",
+        price: 100,
+        image: "https://www.rei.com/media/4e1f5b05-27ef-4267-bb9a-14e35935f218?size=784x588",
+        inventory: 12
+      )
+      @paper = @mike.items.create(
+        name: "Lined Paper",
+        description: "Great for writing on!",
+        price: 20,
+        image: "https://cdn.vertex42.com/WordTemplates/images/printable-lined-paper-wide-ruled.png",
+        inventory: 25
+      )
+      @pencil = @mike.items.create(
+        name: "Yellow Pencil",
+        description: "You can write on paper with it!",
+        price: 2,
+        image: "https://images-na.ssl-images-amazon.com/images/I/31BlVr01izL._SX425_.jpg",
+        inventory: 100
+      )
 
-      @discount_10 = BulkDiscount.create!(name: "10 for 10", percent_off: 10, min_amount: 10, merchant_id: @mike.id)
+      @discount_10 = BulkDiscount.create!(
+        name: "10 for 10",
+        percent_off: 10,
+        min_amount: 10,
+        merchant_id: @mike.id
+      )
+
       visit "/items/#{@pencil.id}"
       click_on "Add To Cart"
       visit "/cart"
@@ -138,6 +210,7 @@ RSpec.describe 'Cart show' do
       click_on "+"
       click_on "+"
     end
+
     it "When I add enough items, the discount renders in the cart." do
       expect(page).to_not have_content("Discounts applied!")
       expect(page).to have_content("Total: $18.00")
@@ -153,7 +226,7 @@ RSpec.describe 'Cart show' do
       expect(page).to have_content("$1.80")
     end
 
-    it "When the number of items drops below the threshold, the discount is removed." do
+    it "When #items drops below the threshold, the discount is removed." do
       expect(page).to have_content("$2.00")
 
       click_on "+"
@@ -169,7 +242,7 @@ RSpec.describe 'Cart show' do
       expect(page).to_not have_content("$1.80")
     end
 
-    it "The discount only applies to the item with more than the threshold number." do
+    it "The discount only applies to the item that meets the min amount." do
       click_on "+"
 
       within "#cart-item-#{@pencil.id}" do
@@ -187,7 +260,12 @@ RSpec.describe 'Cart show' do
     end
 
     it "The discount applies to two items if they both meet the threshold" do
-      discount_5 = BulkDiscount.create!(name: "5 for 5", percent_off: 5, min_amount: 5, merchant_id: @mike.id)
+      discount_5 = BulkDiscount.create!(
+        name: "5 for 5",
+        percent_off: 5,
+        min_amount: 5,
+        merchant_id: @mike.id
+      )
 
       within "#cart-item-#{@pencil.id}" do
         click_on "+"
@@ -214,7 +292,12 @@ RSpec.describe 'Cart show' do
     end
 
     it "The discount doesn't apply to items from other merchants." do
-      discount_2 = BulkDiscount.create!(name: "2 for 2", percent_off: 2, min_amount: 2, merchant_id: @meg.id)
+      discount_2 = BulkDiscount.create!(
+        name: "2 for 2",
+        percent_off: 2,
+        min_amount: 2,
+        merchant_id: @meg.id
+      )
 
       visit "/items/#{@paper.id}"
       click_on "Add To Cart"
@@ -235,7 +318,12 @@ RSpec.describe 'Cart show' do
     end
 
     it "The largest discount applies when there are two valid discounts." do
-      discount_5 = BulkDiscount.create!(name: "5 for 5", percent_off: 5, min_amount: 5, merchant_id: @mike.id)
+      discount_5 = BulkDiscount.create!(
+        name: "5 for 5",
+        percent_off: 5,
+        min_amount: 5,
+        merchant_id: @mike.id
+      )
 
       visit "/items/#{@paper.id}"
       click_on "Add To Cart"
@@ -255,7 +343,12 @@ RSpec.describe 'Cart show' do
     end
 
     it "I get discounts from different merchants if threshold is met." do
-      discount_2 = BulkDiscount.create!(name: "2 for 2", percent_off: 2, min_amount: 2, merchant_id: @meg.id)
+      discount_2 = BulkDiscount.create!(
+        name: "2 for 2",
+        percent_off: 2,
+        min_amount: 2,
+        merchant_id: @meg.id
+      )
 
       visit "/items/#{@tire.id}"
       click_on "Add To Cart"

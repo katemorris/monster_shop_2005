@@ -3,15 +3,31 @@ require 'rails_helper'
 RSpec.describe "As a merchant" do
   describe "When I visit the merchant dashboard" do
     before(:each) do
-      @brian = Merchant.create(name: "Brian's Dog Shop", address: '125 Doggo St.', city: 'Denver', state: 'CO', zip: 80210)
+      @brian = Merchant.create(
+        name: "Brian's Dog Shop",
+        address: '125 Doggo St.',
+        city: 'Denver',
+        state: 'CO',
+        zip: 80210
+      )
       user = create(:user, role: 1, merchant_id: @brian.id)
       visit login_path
       fill_in :email, with: user.email
       fill_in :password, with: 'password'
       click_button "Login"
 
-      @discount_10 = BulkDiscount.create!(name: "10 for 10", percent_off: 10, min_amount: 10, merchant_id: @brian.id)
-      @discount_5 = BulkDiscount.create!(name: "5 for 5", percent_off: 5, min_amount: 5, merchant_id: @brian.id)
+      @discount_10 = BulkDiscount.create!(
+        name: "10 for 10",
+        percent_off: 10,
+        min_amount: 10,
+        merchant_id: @brian.id
+      )
+      @discount_5 = BulkDiscount.create!(
+        name: "5 for 5",
+        percent_off: 5,
+        min_amount: 5,
+        merchant_id: @brian.id
+      )
     end
 
     it 'I see a link to view my bulk discounts' do
@@ -41,8 +57,20 @@ RSpec.describe "As a merchant" do
     end
 
     it "I don't see other merchant's discounts" do
-      competitor = Merchant.create(name: "Competitor", address: '19584 Whatever Ln', city: 'Denver', state: 'CO', zip: 80210)
-      not_my_discount = BulkDiscount.create!(name: "Bad Idea", percent_off: 100, min_amount: 1, merchant_id: competitor.id)
+      competitor = Merchant.create(
+        name: "Competitor",
+        address: '19584 Whatever Ln',
+        city: 'Denver',
+        state: 'CO',
+        zip: 80210
+      )
+      not_my_discount = BulkDiscount.create!(
+        name: "Bad Idea",
+        percent_off: 100,
+        min_amount: 1,
+        merchant_id:
+        competitor.id
+      )
 
       visit merchant_bulk_discounts_path
       expect(page).to have_content(@discount_5.name)
