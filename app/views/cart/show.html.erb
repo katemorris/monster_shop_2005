@@ -26,7 +26,7 @@
         </p>
       </td>
       <td>
-        <p><%=number_to_currency(item.price)%></p>
+        <p><%=number_to_currency(@item_prices[item])%></p>
       </td>
       <td>
         <center>
@@ -42,7 +42,9 @@
     </tr>
   <% end %>
 </table>
+  <h4 align="right">Discount: <%= number_to_currency(cart.discount_total) %></h4>
   <h3 align="right">Total: <%= number_to_currency(cart.total) %></h3>
+  <% # Need to update the above to include the discount if present. %>
   <p><%= link_to "Empty Cart", "/cart", method: :delete %></p>
   <div class="checkout"><%= button_to "Checkout", "/orders/new", method: :get if current_user %></div>
   <% if !current_user %>

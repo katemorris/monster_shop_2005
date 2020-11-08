@@ -1,7 +1,7 @@
 class CartController < ApplicationController
   def create
     item = Item.find(params[:item_id])
-    cart.add_item(item.id.to_s)
+    cart.add_item(item)
     flash[:success] = "#{item.name} was successfully added to your cart"
     redirect_to "/items"
   end
@@ -21,6 +21,7 @@ class CartController < ApplicationController
     render file: "public/404" if current_admin?
     @items = cart.items
     if cart.has_discounts?
+      cart.apply_discounts
       flash.now[:success] = "Discounts applied!"
     end
   end
