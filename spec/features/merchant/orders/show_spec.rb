@@ -3,27 +3,27 @@ require 'rails_helper'
 describe 'as a merchant employee' do
   describe 'when I visit an order show page from my dashboard' do
     before :each do
-      @merchant_1 = create(:merchant, :with_items, item_count: 3)
-      @merchant_2 = create(:merchant, :with_items, item_count: 3)
       @user = create(:user)
-      @merchant_employee = create(:user, role: 1, merchant_id: @merchant_1.id)
-
-      @m1_item1 = @merchant_1.items[0]
-      @m1_item1.inventory = 5
-      @m1_item1.save
-
-      @m1_item2 = @merchant_1.items[1]
-      @m1_item3 = @merchant_1.items[2]
-      @m2_item1 = @merchant_2.items[0]
-      @m2_item2 = @merchant_2.items[1]
-      @m2_item3 = @merchant_2.items[2]
       @order = create(:order, user: @user)
+
+      @merchant_1 = create(:merchant)
+      @m1_item1 = create(:item, merchant_id: @merchant_1.id, inventory: 5)
+      @m1_item2 = create(:item, merchant_id: @merchant_1.id, inventory: 20)
+      @m1_item3 = create(:item, merchant_id: @merchant_1.id, inventory: 30)
+
       @io1 = create(:item_order, order: @order, item: @m1_item1, quantity: 2)
       @io2 = create(:item_order, order: @order, item: @m1_item2, quantity: 35)
       @io3 = create(:item_order, order: @order, item: @m1_item3)
+
+      @merchant_2 = create(:merchant)
+      @m2_item1 = create(:item, merchant_id: @merchant_2.id, inventory: 5)
+      @m2_item2 = create(:item, merchant_id: @merchant_2.id, inventory: 20)
+      @m2_item3 = create(:item, merchant_id: @merchant_2.id, inventory: 30)
+      
       @io4 = create(:item_order, order: @order, item: @m2_item1)
       @io5 = create(:item_order, order: @order, item: @m2_item2)
 
+      @merchant_employee = create(:user, role: 1, merchant_id: @merchant_1.id)
       visit login_path
       fill_in :email, with: @merchant_employee.email
       fill_in :password, with: @merchant_employee.password
