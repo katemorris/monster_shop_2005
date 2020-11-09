@@ -17,7 +17,7 @@
       <h3><%= item_order.item.name %></h3><br/>
       <%= image_tag(item_order.item.image) %>
       <p>Item Description: <%= item_order.item.description %><br>
-      Item Price: <%= format_price(item_order.item.price) %><br>
+      Item Price: <%= format_price(item_order.price) %><br>
       Quantity of Item in Order: <%= item_order.quantity %><br>
       Order Subtotal: <%= format_price(item_order.subtotal) %></p>
     </section>

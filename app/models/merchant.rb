@@ -3,16 +3,9 @@ class Merchant < ApplicationRecord
   has_many :item_orders, through: :items
   has_many :orders, through: :items
   has_many :users, -> { where(role: 1)}
+  has_many :bulk_discounts
 
-  validates_presence_of :name,
-                        :address,
-                        :city,
-                        :state,
-                        :zip
-
-  def no_orders?
-    item_orders.empty?
-  end
+  validates_presence_of :name, :address, :city, :state, :zip
 
   def item_count
     items.count
