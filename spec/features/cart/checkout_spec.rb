@@ -20,10 +20,14 @@ RSpec.describe 'Cart show' do
 
     it 'Theres a link to checkout for users' do
       user = create(:user)
+      home = create(:address, user: user, nickname: "Home")
+
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
 
       visit "/cart"
-
+      within("#address-#{home.id}") do
+        click_on "Select"
+      end
       expect(page).to have_button("Checkout")
 
       click_on "Checkout"
@@ -42,19 +46,19 @@ RSpec.describe 'Cart show' do
 
     it 'I can complete checkout when logged in' do
       user = create(:user)
+      home = create(:address, user: user, nickname: "Home")
+
       visit '/login'
       fill_in :email, with: user.email
       fill_in :password, with: 'password'
       click_button 'Login'
 
       visit "/cart"
-      click_on "Checkout"
 
-      fill_in :name, with: user.name
-      fill_in :address, with: user.street_address
-      fill_in :city, with: user.city
-      fill_in :state, with: user.state
-      fill_in :zip, with: user.zip
+      within("#address-#{home.id}") do
+        click_on "Select"
+      end
+      click_on "Checkout"
       click_on "Create Order"
 
       new_order = Order.last

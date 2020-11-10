@@ -4,6 +4,7 @@ RSpec.describe("Order Creation") do
   describe "When I check out from my cart" do
     before(:each) do
       @user = create(:user)
+      @home = create(:address, user: @user, nickname: "Home", zip: "89023")
       visit login_path
       fill_in :email, with: @user.email
       fill_in :password, with: @user.password
@@ -25,23 +26,14 @@ RSpec.describe("Order Creation") do
       click_on "Add To Cart"
 
       visit "/cart"
+      within("#address-#{@home.id}") do
+        click_on "Select"
+      end
       click_on "Checkout"
     end
 
     it 'I can create a new order' do
-      name = "Bert"
-      address = "123 Sesame St."
-      city = "NYC"
-      state = "New York"
-      zip = 10001
-
-      fill_in :name, with: name
-      fill_in :address, with: address
-      fill_in :city, with: city
-      fill_in :state, with: state
-      fill_in :zip, with: zip
-
-      click_button "Create Order"
+      click_on "Create Order"
 
       new_order = Order.last
 
@@ -49,11 +41,11 @@ RSpec.describe("Order Creation") do
       visit "/orders/#{new_order.id}"
 
       within '.shipping-address' do
-        expect(page).to have_content(name)
-        expect(page).to have_content(address)
-        expect(page).to have_content(city)
-        expect(page).to have_content(state)
-        expect(page).to have_content(zip)
+        expect(page).to have_content(@home.name)
+        expect(page).to have_content(@home.street_address)
+        expect(page).to have_content(@home.city)
+        expect(page).to have_content(@home.state)
+        expect(page).to have_content(@home.zip)
       end
 
       within "#item-#{@paper.id}" do
@@ -88,30 +80,13 @@ RSpec.describe("Order Creation") do
         expect(page).to have_content(new_order.created_at)
       end
     end
-
-    it 'i cant create order if info not filled out' do
-      name = ""
-      address = "123 Sesame St."
-      city = "NYC"
-      state = "New York"
-      zip = 10001
-
-      fill_in :name, with: name
-      fill_in :address, with: address
-      fill_in :city, with: city
-      fill_in :state, with: state
-      fill_in :zip, with: zip
-
-      click_button "Create Order"
-      expect(page).to have_content("Please complete address form to create an order.")
-      expect(page).to have_button("Create Order")
-    end
   end
 
   describe "When there are applicable discounts in a cart" do
-
     it 'The price that is added to the order includes discounts' do
       @user = create(:user)
+      @home = create(:address, user: @user, nickname: "Home")
+
       visit login_path
       fill_in :email, with: @user.email
       fill_in :password, with: @user.password
@@ -148,21 +123,12 @@ RSpec.describe("Order Creation") do
         expect(page).to have_content("10")
         expect(page).to have_content("$1.80")
       end
+      within("#address-#{@home.id}") do
+        click_on "Select"
+      end
       click_on "Checkout"
 
-      name = "Bert"
-      address = "123 Sesame St."
-      city = "NYC"
-      state = "New York"
-      zip = 10001
-
-      fill_in :name, with: name
-      fill_in :address, with: address
-      fill_in :city, with: city
-      fill_in :state, with: state
-      fill_in :zip, with: zip
-
-      click_button "Create Order"
+      click_on "Create Order"
       order = Order.last
       click_on "#{order.id}"
 

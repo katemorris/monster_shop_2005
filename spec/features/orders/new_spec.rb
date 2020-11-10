@@ -4,6 +4,8 @@ RSpec.describe("New Order Page") do
   describe "When I check out from my cart" do
     before(:each) do
       @user = create(:user)
+      @home = create(:address, user: @user, nickname: "Home")
+
       visit login_path
       fill_in :email, with: @user.email
       fill_in :password, with: @user.password
@@ -27,6 +29,10 @@ RSpec.describe("New Order Page") do
 
     it "I see all the information about my current cart" do
       visit "/cart"
+
+      within("#address-#{@home.id}") do
+        click_on "Select"
+      end
 
       click_on "Checkout"
 
@@ -55,30 +61,6 @@ RSpec.describe("New Order Page") do
       end
 
       expect(page).to have_content("Total: $142")
-    end
-
-    it "I see a form where I can enter my shipping info" do
-      visit "/cart"
-      click_on "Checkout"
-
-      expect(page).to have_field(:name)
-      expect(page).to have_field(:address)
-      expect(page).to have_field(:city)
-      expect(page).to have_field(:state)
-      expect(page).to have_field(:zip)
-      expect(page).to have_button("Create Order")
-    end
-
-    it 'must fill out complete address to checkout' do
-      visit '/cart'
-      click_on 'Checkout'
-      click_on 'Create Order'
-      
-      fill_in 'Address', with: '90 st.'
-      fill_in 'State', with: 'CO'
-      fill_in 'Zip', with: '12345'
-
-      expect(page).to have_content('Please complete address form to create an order') 
     end
   end
 end
