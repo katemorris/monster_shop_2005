@@ -22,6 +22,7 @@ class Profile::AddressesController < Profile::BaseController
 
   def edit
     @address = Address.find(params[:id])
+    render file: 'public/404' if @address.order_addresses.count > 0
   end
 
   def update
@@ -29,7 +30,7 @@ class Profile::AddressesController < Profile::BaseController
     @address.update(address_params)
     if @address.valid?
       @address.save
-      flash[:success] = "#{@address.nickname} has been updated!"
+      flash[:success] = "The address has been updated!"
       redirect_to profile_addresses_path
     else
       flash[:error] = @address.errors.full_messages.to_sentence
