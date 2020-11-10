@@ -9,21 +9,50 @@ class Profile::AddressesController < Profile::BaseController
   end
 
   def create
-    @address = Address.new(address_params)
+    @address = current_user.addresses.new(address_params)
+    if @address.valid?
+      @address.save
+      flash[:success] = "#{@address.nickname} has been added!"
+      redirect_to profile_addresses_path
+    else
+      flash[:error] = @address.errors.full_messages.to_sentence
+      render :new
+    end
   end
 
-  def show
+  def edit
     @address = Address.find(params[:id])
   end
 
   def update
-    address = Address.find(params[:id])
-    redirect_to "/profile"
+    @address = Address.find(params[:id])
+    @address.update(address_params)
+    if @address.valid?
+      @address.save
+      flash[:success] = "#{@address.nickname} has been updated!"
+      redirect_to profile_addresses_path
+    else
+      flash[:error] = @address.errors.full_messages.to_sentence
+      render :edit
+    end
   end
 
   def destroy
     Address.destroy(params[:id])
     flash[:notice] = "The address has been removed."
     redirect_to profile_addresses_path
+  end
+
+  private
+
+  def address_params
+    params.require(:address).permit(
+      :name,
+      :street_address,
+      :city,
+      :state,
+      :zip,
+      :nickname
+    )
   end
 end
