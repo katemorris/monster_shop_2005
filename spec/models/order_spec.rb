@@ -10,9 +10,12 @@ describe Order, type: :model do
   end
 
   describe "relationships" do
+    it {should belong_to :user}
     it {should have_many :item_orders}
     it {should have_many(:items).through(:item_orders)}
-    it {should belong_to :user}
+    it { should have_many :order_addresses }
+    it { should have_many(:addresses).through(:order_addresses)}
+
   end
 
   describe 'instance methods' do

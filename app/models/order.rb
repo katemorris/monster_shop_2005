@@ -1,8 +1,13 @@
 class Order < ApplicationRecord
   validates_presence_of :name, :address, :city, :state, :zip
+
   belongs_to :user
+
   has_many :item_orders
   has_many :items, through: :item_orders
+
+  has_many :order_addresses
+  has_many :addresses, through: :order_addresses
 
   enum status:  %w(pending packaged shipped cancelled)
 

@@ -15,8 +15,9 @@ describe User, type: :model do
   end
 
   describe 'relationships' do
-    it {should belong_to(:merchant).optional}
-    it {should have_many :orders}
+    it { should belong_to(:merchant).optional }
+    it { should have_many :orders }
+    it { should have_many :addresses }
   end
 
   describe 'instance methods' do

@@ -1,4 +1,19 @@
 FactoryBot.define do
+  factory :order_address do
+    address { nil }
+    order { nil }
+  end
+
+  factory :address do
+    name { Faker::Name.name }
+    street_address { Faker::Address.street_address }
+    city { Faker::Address.city }
+    state { Faker::Address.state_abbr }
+    zip { Faker::Address.zip }
+    nickname { Faker::Superhero.name }
+    user
+  end
+
   factory :user do
     name { Faker::Superhero.name }
     street_address { Faker::Address.street_address }
