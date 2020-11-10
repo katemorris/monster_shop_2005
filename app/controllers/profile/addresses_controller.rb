@@ -22,7 +22,7 @@ class Profile::AddressesController < Profile::BaseController
 
   def edit
     @address = Address.find(params[:id])
-    render file: 'public/404' if @address.order_addresses.count > 0
+    render file: 'public/404' if !@address.has_no_shipped_orders?
   end
 
   def update

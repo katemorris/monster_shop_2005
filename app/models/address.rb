@@ -5,7 +5,7 @@ class Address < ApplicationRecord
 
   validates_presence_of :nickname, :name, :street_address, :city, :state, :zip
 
-  def has_no_orders?
-    orders.count == 0
+  def has_no_shipped_orders?
+    orders.where('orders.status = ?', "2").count == 0
   end
 end
