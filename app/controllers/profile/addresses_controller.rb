@@ -20,4 +20,10 @@ class Profile::AddressesController < Profile::BaseController
     address = Address.find(params[:id])
     redirect_to "/profile"
   end
+
+  def destroy
+    Address.destroy(params[:id])
+    flash[:notice] = "The address has been removed."
+    redirect_to profile_addresses_path
+  end
 end

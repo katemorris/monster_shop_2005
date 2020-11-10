@@ -1,1 +1,20 @@
 <h1>My Addresses</h1>
+<p><%= link_to "Add New Address", new_profile_address_path %></p>
+<% @user.addresses.each do |address| %>
+<section class="address-card" id="address-<%= address.id %>">
+  <h3><%= address.nickname %></h3>
+  <p>
+    <%= address.name %><br>
+    <%= address.street_address %><br>
+    <%= address.city %>, <%= address.state %> <%= address.zip %>
+  </p>
+  <% if address.has_no_orders? %>
+    <p>
+      <%= link_to "Edit", edit_profile_address_path(address) %> |
+      <%= link_to "Delete", profile_address_path(address), method: :delete %>
+    </p>
+  <% else %>
+    <p>This address cannot be edited.</p>
+  <% end %>
+</section>
+<% end %>
