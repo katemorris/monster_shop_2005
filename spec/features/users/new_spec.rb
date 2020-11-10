@@ -93,4 +93,29 @@ RSpec.describe "As a visitor", type: :feature do
       expect(page).to have_content('Email has already been taken')
     end
   end
+
+  describe "Address book saving" do
+    it "When I register, my address is saved as 'Home'" do
+      visit '/register'
+
+      fill_in :user_name, with: "Jun Lee"
+      fill_in :user_street_address, with: "1234 America Lane"
+      fill_in :user_city, with: "Denver"
+      fill_in :user_state, with: "CO"
+      fill_in :user_zip, with: "80017"
+      fill_in :user_email, with: "jun.lee@gmail.com"
+      fill_in :user_password, with: "password"
+      fill_in :user_password_confirmation, with: "password"
+
+      click_button "Create User"
+      user = User.last
+      address = Address.find_by(user_id: user.id)
+      expect(address.nickname).to eq("Home")
+      expect(address.name).to eq("Jun Lee")
+      expect(address.street_address).to eq("1234 America Lane")
+      expect(address.city).to eq("Denver")
+      expect(address.state).to eq("CO")
+      expect(address.zip).to eq("80017")
+    end
+  end
 end

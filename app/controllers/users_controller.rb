@@ -6,9 +6,9 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-
     if @user.valid?
       @user.save
+      @user.addresses.create!(address_params)
       flash[:success] = 'You are now registered and logged in!'
       session[:user_id] = @user.id
       redirect_to "/profile"
@@ -69,6 +69,17 @@ class UsersController < ApplicationController
       :state,
       :zip,
       :email)
+  end
+
+  def address_params
+    params.require(:user).permit(
+      :name,
+      :street_address,
+      :city,
+      :state,
+      :zip,
+      :nickname
+    )
   end
 
   def password_params

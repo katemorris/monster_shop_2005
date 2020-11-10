@@ -27,6 +27,8 @@
   <%= f.label :password_confirmation %>
   <%= f.password_field :password_confirmation, value: nil %>
 
+  <%= f.hidden_field :nickname, value: "Home" %>
+
   <%= f.submit %>
   <% end %>
 </center>
