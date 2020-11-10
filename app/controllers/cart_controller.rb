@@ -23,9 +23,15 @@ class CartController < ApplicationController
     if cart.has_discounts?
       cart.apply_discounts
       flash.now[:success] = "Discounts applied!"
-    else
-
     end
+  end
+
+  def address
+    session.delete(:address)
+    user = User.find(current_user.id)
+    address = user.addresses.where('addresses.nickname = ?', params["address"])
+    session[:address] = address
+    redirect_to '/cart'
   end
 
   def destroy

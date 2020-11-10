@@ -20,7 +20,14 @@
   <% end %>
 </table>
 <h3 align = "right">Total: <%= number_to_currency(cart.total)%></h3>
-<center>
+<h2>Shipping Information</h2>
+<% if @address %>
+  <%= render partial: "shared/address_card", locals: { address: @address } %>
+  <%= button_to "Create Order", "/orders", method: :post %>
+<% else %>
+<p>You need to select an address in the cart!</p>
+<% end %>
+<!-- <center>
   <h2>Shipping Info:</h2>
   <%= form_tag "/orders", method: :create do %>
     <%= label_tag :name %>
@@ -40,4 +47,4 @@
 
     <%= submit_tag 'Create Order' %>
   <% end %>
-</center>
+</center> -->
