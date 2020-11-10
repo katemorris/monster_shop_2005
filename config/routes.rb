@@ -47,6 +47,7 @@ Rails.application.routes.draw do
     get "/orders", to: "orders#index"
     get "/orders/:id", to: "orders#show", as: "order_show"
     patch "/orders/:id", to: "orders#update", as: "order_cancel"
+    resources :addresses
   end
 
   get "/orders/new", to: "orders#new"
