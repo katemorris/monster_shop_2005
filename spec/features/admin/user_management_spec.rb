@@ -131,10 +131,6 @@ describe 'As an admin' do
           end
 
           expect(page).to have_content(user.name)
-          expect(page).to have_content(user.street_address)
-          expect(page).to have_content(user.city)
-          expect(page).to have_content(user.state)
-          expect(page).to have_content(user.zip)
           expect(page).to have_content(user.email)
           expect(page).to have_content(user.created_at.strftime("%m/%d/%Y"))
           expect(page).to have_link("My Orders")

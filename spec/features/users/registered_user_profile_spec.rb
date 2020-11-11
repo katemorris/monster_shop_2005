@@ -10,10 +10,6 @@ RSpec.describe "As a registered user", type: :feature do
 
       within ".user-profile" do
         expect(page).to have_content(user.name)
-        expect(page).to have_content(user.street_address)
-        expect(page).to have_content(user.city)
-        expect(page).to have_content(user.state)
-        expect(page).to have_content(user.zip)
         expect(page).to have_content(user.email)
         expect(page).to have_content(user.created_at.strftime("%m/%d/%Y"))
         expect(page).to have_link("Edit Profile Data")
@@ -37,17 +33,10 @@ RSpec.describe "As a registered user", type: :feature do
       expect(current_path).to eq(profile_edit_path)
 
       expect(find_field(:name).value).to eq(user.name)
-      expect(find_field(:street_address).value).to eq(user.street_address)
-      expect(find_field(:city).value).to eq(user.city)
-      expect(find_field(:state).value).to eq(user.state)
-      expect(find_field(:zip).value).to eq(user.zip)
       expect(find_field(:email).value).to eq(user.email)
       expect(page).to_not have_field(:password)
       expect(page).to_not have_field(:password_confirmation)
 
-      fill_in :city, with: "Denver"
-      fill_in :state, with: "CO"
-      fill_in :zip, with: "80209"
       fill_in :email, with: "fake@example.com"
 
       click_button "Update Profile"
@@ -57,11 +46,6 @@ RSpec.describe "As a registered user", type: :feature do
       expect(page).to have_content("Your profile is updated")
 
       within ".user-profile" do
-        expect(page).to have_content(user.name)
-        expect(page).to have_content(user.street_address)
-        expect(page).to have_content("Denver")
-        expect(page).to have_content("CO")
-        expect(page).to have_content("80209")
         expect(page).to have_content("fake@example.com")
         expect(page).to have_content(user.created_at.strftime("%m/%d/%Y"))
       end
@@ -120,10 +104,6 @@ RSpec.describe "As a registered user", type: :feature do
       expect(current_path).to eq(profile_edit_path)
       expect(page).to have_content("Email has already been taken")
       expect(find_field(:name).value).to eq(user2.name)
-      expect(find_field(:street_address).value).to eq(user2.street_address)
-      expect(find_field(:city).value).to eq(user2.city)
-      expect(find_field(:state).value).to eq(user2.state)
-      expect(find_field(:zip).value).to eq(user2.zip)
       expect(find_field(:email).value).to eq(user2.email)
       expect(page).to_not have_field(:password)
       expect(page).to_not have_field(:password_confirmation)
