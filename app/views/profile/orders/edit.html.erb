@@ -1,10 +1,12 @@
 <h1>Edit Shipping Address for Order <%= @order.id %></h1>
 <section class="current-address">
+  <h2>Current Shipping Address</h2>
   <p><%= @order.name %><br>
     <%= @order.address %><br>
     <%= @order.city %>, <%= @order.state %> <%= @order.zip %>
   </p>
 </section>
+<h2>My Addresses</h2>
 <section class="addresses">
   <p><%= link_to "Add New Address", new_profile_address_path %></p>
   <% @user.addresses.each do |address| %>

@@ -3,7 +3,7 @@ class Merchant < ApplicationRecord
   has_many :item_orders, through: :items
   has_many :orders, through: :items
   has_many :users, -> { where(role: 1)}
-  has_many :bulk_discounts
+  has_many :bulk_discounts, dependent: :destroy
 
   validates_presence_of :name, :address, :city, :state, :zip
 
