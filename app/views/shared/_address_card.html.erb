@@ -5,12 +5,4 @@
     <%= address.street_address %><br>
     <%= address.city %>, <%= address.state %> <%= address.zip %>
   </p>
-  <% if address.has_no_shipped_orders? %>
-    <p>
-      <%= link_to "Edit", edit_profile_address_path(address) %> |
-      <%= link_to "Delete", profile_address_path(address), method: :delete %>
-    </p>
-  <% else %>
-    <p>This address cannot be edited.</p>
-  <% end %>
 </section>

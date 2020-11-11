@@ -45,20 +45,24 @@
   <h3 align="right">Total: <%= number_to_currency(cart.total) %></h3>
   <p><%= link_to "Empty Cart", "/cart", method: :delete %></p>
   <% if current_user %>
-    <h3>Select an Address</h3>
-      <% current_user.addresses.each do |address| %>
-      <div id="address-<%= address.id %>">
-        <%= render partial: "shared/address_card", locals: { address: address } %>
-        <%= button_to "Select", "/cart?address=#{address.nickname}", method: :patch %>
-      </div>
-      <% end %>
     <% if session[:address] %>
+    <p>Order shipping address chosen! |
+      <%= link_to "Change Shipping Address", "/cart?address=destroy", method: :patch  %>
+    </p>
       <div class="checkout">
         <%= button_to "Checkout", "/orders/new", method: :get %>
       </div>
     <% elsif current_user.addresses.count == 0 %>
       <p>Please add an address to your account.</p>
       <p><%= link_to "Add a New Address", new_profile_address_path %></p>
+    <% else %>
+      <h3>Select an Address</h3>
+        <% current_user.addresses.each do |address| %>
+        <div id="address-<%= address.id %>">
+          <%= render partial: "shared/address_card", locals: { address: address } %>
+          <%= button_to "Select", "/cart?address=#{address.nickname}", method: :patch %>
+        </div>
+        <% end %>
     <% end %>
     <% else %>
       <div class='visitor-checkout'>

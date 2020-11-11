@@ -18,7 +18,7 @@ class Profile::OrdersController < Profile::BaseController
     order = Order.find(params[:id])
     user = User.find(current_user.id)
     if params[:address]
-      address = user.addresses.where('addresses.nickname = ?', params["address"]).first
+      address = user.addresses.find_by(nickname: params["address"])
       map_address(address)
       order.update(address_params)
       order.save
