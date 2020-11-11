@@ -47,7 +47,8 @@ Rails.application.routes.draw do
   namespace :profile do
     get "/orders", to: "orders#index"
     get "/orders/:id", to: "orders#show", as: "order_show"
-    patch "/orders/:id", to: "orders#update", as: "order_cancel"
+    patch "/orders/:id", to: "orders#update"
+    get "/orders/:id/edit", to: "orders#edit", as: "order_edit"
     resources :addresses, except: [:show]
   end
 
