@@ -1,4 +1,19 @@
 FactoryBot.define do
+  factory :order_address do
+    address { nil }
+    order { nil }
+  end
+
+  factory :address do
+    name { Faker::Name.name }
+    street_address { Faker::Address.street_address }
+    city { Faker::Address.city }
+    state { Faker::Address.state_abbr }
+    zip { Faker::Address.zip }
+    nickname { Faker::Superhero.name }
+    user
+  end
+
   factory :user do
     name { Faker::Superhero.name }
     street_address { Faker::Address.street_address }
@@ -30,13 +45,6 @@ FactoryBot.define do
     trait :with_item_orders do
       transient do
         item_count { 3 }
-      end
-
-      after(:create) do |merchant, evaluator|
-        merchant.items << create_list(:item, evaluator.item_count)
-        create(:item_order, item: merchant.items[0])
-        create(:item_order, item: merchant.items[1])
-        create(:item_order, item: merchant.items[2])
       end
     end
   end

@@ -10,10 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_07_014952) do
+ActiveRecord::Schema.define(version: 2020_11_09_225254) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "addresses", force: :cascade do |t|
+    t.string "name"
+    t.string "street_address"
+    t.string "city"
+    t.string "state"
+    t.string "zip"
+    t.string "nickname"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_addresses_on_user_id"
+  end
 
   create_table "bulk_discounts", force: :cascade do |t|
     t.string "name"
@@ -61,6 +74,15 @@ ActiveRecord::Schema.define(version: 2020_11_07_014952) do
     t.boolean "enabled", default: true
   end
 
+  create_table "order_addresses", force: :cascade do |t|
+    t.bigint "address_id"
+    t.bigint "order_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["address_id"], name: "index_order_addresses_on_address_id"
+    t.index ["order_id"], name: "index_order_addresses_on_order_id"
+  end
+
   create_table "orders", force: :cascade do |t|
     t.string "name"
     t.string "address"
@@ -97,10 +119,13 @@ ActiveRecord::Schema.define(version: 2020_11_07_014952) do
     t.index ["merchant_id"], name: "index_users_on_merchant_id"
   end
 
+  add_foreign_key "addresses", "users"
   add_foreign_key "bulk_discounts", "merchants"
   add_foreign_key "item_orders", "items"
   add_foreign_key "item_orders", "orders"
   add_foreign_key "items", "merchants"
+  add_foreign_key "order_addresses", "addresses"
+  add_foreign_key "order_addresses", "orders"
   add_foreign_key "orders", "users"
   add_foreign_key "reviews", "items"
   add_foreign_key "users", "merchants"

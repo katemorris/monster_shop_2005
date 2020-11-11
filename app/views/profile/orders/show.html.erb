@@ -23,3 +23,12 @@
     </section>
   <% end %>
 </section>
+
+<section class="shipping-address">
+  <p>Name: <%= @order.name %><br>
+  Address: <%= @order.address %><br>
+  City: <%= @order.city %><br>
+  State: <%= @order.state %><br>
+  Zip: <%= @order.zip %></p>
+  <%= link_to "Change Address", profile_order_edit_path(@order) if @order.status == 'pending' %>
+</section>

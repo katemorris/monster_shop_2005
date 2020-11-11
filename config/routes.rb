@@ -40,13 +40,16 @@ Rails.application.routes.draw do
   post "/cart/:item_id", to: "cart#create"
   patch "/cart/:item_id", to: "cart#update"
   get "/cart", to: "cart#show"
+  patch "/cart", to: "cart#address"
   delete "/cart", to: "cart#destroy"
   delete "/cart/:item_id", to: "cart#destroy"
 
   namespace :profile do
     get "/orders", to: "orders#index"
     get "/orders/:id", to: "orders#show", as: "order_show"
-    patch "/orders/:id", to: "orders#update", as: "order_cancel"
+    patch "/orders/:id", to: "orders#update"
+    get "/orders/:id/edit", to: "orders#edit", as: "order_edit"
+    resources :addresses, except: [:show]
   end
 
   get "/orders/new", to: "orders#new"

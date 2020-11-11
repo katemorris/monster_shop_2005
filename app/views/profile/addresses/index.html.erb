@@ -1,0 +1,7 @@
+<h1>My Addresses</h1>
+<p><%= link_to "Add New Address", new_profile_address_path %></p>
+<% @user.addresses.each do |address| %>
+<div id="address-<%= address.id %>">
+  <%= render partial: "shared/address_card", locals: { address: address } %>
+</div>
+<% end %>

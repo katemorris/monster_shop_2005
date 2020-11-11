@@ -1,0 +1,4 @@
+<h1>Edit <%= @address.nickname %></h1>
+<div id="address-<%= @address.id %>">
+  <%= render partial: "address_form", locals: { url: profile_address_path(@address), method: "patch"} %>
+</div>

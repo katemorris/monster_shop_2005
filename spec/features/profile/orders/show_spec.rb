@@ -9,6 +9,8 @@ describe 'as a registered user' do
       state: "Arizona",
       zip: "66666")
     @user = create(:user)
+    @home = create(:address, user: @user, nickname: "Home")
+    @work = create(:address, user: @user, nickname: "Work")
     @gelatinous_cube = Item.create(
       name: "Gelatinous Cube",
       description: "A ten-foot cube of transparent gelatinous ooze.",
@@ -75,6 +77,33 @@ describe 'as a registered user' do
     fill_in :password, with: @user.password
     click_button "Login"
     click_link "My Orders"
+  end
+
+  describe 'visiting an orders show page to change the shipping address' do
+    it "I can change the address on the order if it is pending" do
+      within "#order-#{@order_1.id}" do
+        click_link("#{@order_1.id}")
+      end
+
+      within('.shipping-address') do
+        click_on "Change Address"
+      end
+
+      expect(current_path).to eq(profile_order_edit_path(@order_1))
+    end
+
+    it "I cannot change the address on the order if it isn't pending" do
+      packaged_order = create(:order, user: @user, status: 1)
+      visit profile_orders_path
+      
+      within "#order-#{packaged_order.id}" do
+        click_link("#{packaged_order.id}")
+      end
+
+      within('.shipping-address') do
+        expect(page).to_not have_content("Change Address")
+      end
+    end
   end
 
   describe 'visiting an orders show page to delete that order' do

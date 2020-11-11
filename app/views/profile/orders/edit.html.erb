@@ -1,0 +1,16 @@
+<h1>Edit Shipping Address for Order <%= @order.id %></h1>
+<section class="current-address">
+  <p><%= @order.name %><br>
+    <%= @order.address %><br>
+    <%= @order.city %>, <%= @order.state %> <%= @order.zip %>
+  </p>
+</section>
+<section class="addresses">
+  <p><%= link_to "Add New Address", new_profile_address_path %></p>
+  <% @user.addresses.each do |address| %>
+  <div id="address-<%= address.id %>">
+    <%= render partial: "shared/address_card", locals: { address: address } %>
+    <%= button_to "Select", "/profile/orders/#{@order.id}?address=#{address.nickname}", method: :patch %>
+  </div>
+  <% end %>
+</section>

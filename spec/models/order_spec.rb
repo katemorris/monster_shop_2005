@@ -10,9 +10,12 @@ describe Order, type: :model do
   end
 
   describe "relationships" do
+    it {should belong_to :user}
     it {should have_many :item_orders}
     it {should have_many(:items).through(:item_orders)}
-    it {should belong_to :user}
+    it { should have_many :order_addresses }
+    it { should have_many(:addresses).through(:order_addresses)}
+
   end
 
   describe 'instance methods' do
@@ -91,7 +94,7 @@ describe Order, type: :model do
         @chew_toy = @meg.items.create(name: "Chew Toy", description: "Great chew toy!", price: 20, image: "http://lovencaretoys.com/image/cache/dog/tug-toy-dog-pull-9010_2-800x800.jpg", inventory: 15)
         @item_order_3 = @order_1.item_orders.create!(item: @chew_toy, price: @chew_toy.price, quantity: 4)
 
-        expect(@order_1.merchant_items(@meg.id)).to eq([@tire, @chew_toy])
+        expect(@order_1.merchant_items(@meg.id).sort).to eq([@tire, @chew_toy].sort)
         expect(@order_1.merchant_items(@brian.id)).to eq([@pull_toy])
       end
     end

@@ -1,0 +1,22 @@
+<%= form_with(model: @address, url: url, local: true, method: method) do |f| %>
+
+<%= f.label :nickname %>
+<%= f.text_field :nickname %>
+
+<%= f.label :name %>
+<%= f.text_field :name %>
+
+<%= f.label :street_address %>
+<%= f.text_field :street_address %>
+
+<%= f.label :city %>
+<%= f.text_field :city %>
+
+<%= f.label :state %>
+<%= f.text_field :state %>
+
+<%= f.label :zip %>
+<%= f.text_field :zip %>
+
+<%= f.submit %>
+<% end %>

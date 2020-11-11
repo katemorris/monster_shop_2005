@@ -1,7 +1,7 @@
 class OrdersController <ApplicationController
 
   def new
-
+    @address = Address.find(session[:address].first["id"]) if session[:address]
   end
 
   def show
@@ -10,17 +10,14 @@ class OrdersController <ApplicationController
 
   def create
     user = User.find(session[:user_id])
-    order = user.orders.new(order_params)
-    if order.save
-      build_item_orders(order)
-      session.delete(:cart)
-      session[:order_id] = order.id
-      flash[:success] = "Your order was successfully created!"
-      redirect_to "/profile/orders"
-    else
-      flash[:notice] = "Please complete address form to create an order."
-      render :new
-    end
+    map_address(session[:address].first)
+    order = user.orders.create(order_params)
+    build_item_orders(order)
+    session.delete(:address)
+    session.delete(:cart)
+    session[:order_id] = order.id
+    flash[:success] = "Your order was successfully created!"
+    redirect_to "/profile/orders"
   end
 
 
@@ -38,5 +35,14 @@ class OrdersController <ApplicationController
         price: cart.item_prices[item.id.to_s]
         })
     end
+  end
+
+  def map_address(address)
+    params[:name] = address["name"]
+    params[:address] = address["street_address"]
+    params[:city] = address["city"]
+    params[:state] = address["state"]
+    params[:zip] = address["zip"]
+    params[:user_id] = address["user_id"]
   end
 end
