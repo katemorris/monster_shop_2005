@@ -46,7 +46,7 @@
   <p><%= link_to "Empty Cart", "/cart", method: :delete %></p>
   <% if current_user %>
     <% if session[:address] %>
-    <p>Order shipping to <%= session[:address].first["nickname"] %> |
+    <p>Order shipping address chosen! |
       <%= link_to "Change Shipping Address", "/cart?address=destroy", method: :patch  %>
     </p>
       <div class="checkout">

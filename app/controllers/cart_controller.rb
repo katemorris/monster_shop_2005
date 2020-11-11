@@ -28,7 +28,7 @@ class CartController < ApplicationController
 
   def address
     session.delete(:address)
-    return redirect_to "/cart" if params["address"] == "delete"
+    return redirect_to "/cart" if params["address"] == "destroy"
     user = User.find(current_user.id)
     address = user.addresses.where('addresses.nickname = ?', params["address"])
     session[:address] = address

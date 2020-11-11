@@ -95,5 +95,33 @@ RSpec.describe 'Cart show' do
       expect(page).to have_link("Add a New Address")
     end
 
+    it "When I choose an address, I can change my mind." do
+      within("#address-#{@home.id}") do
+        click_on "Select"
+      end
+
+      expect(page).to_not have_content(@home.street_address)
+      expect(page).to_not have_content(@work.street_address)
+
+      click_on "Change Shipping Address"
+
+      within("#address-#{@home.id}") do
+        expect(page).to have_content(@home.nickname)
+        expect(page).to have_content(@home.name)
+        expect(page).to have_content(@home.street_address)
+        expect(page).to have_content(@home.city)
+        expect(page).to have_content(@home.state)
+        expect(page).to have_content(@home.zip)
+      end
+
+      within("#address-#{@work.id}") do
+        expect(page).to have_content(@work.nickname)
+        expect(page).to have_content(@work.name)
+        expect(page).to have_content(@work.street_address)
+        expect(page).to have_content(@work.city)
+        expect(page).to have_content(@work.state)
+        expect(page).to have_content(@work.zip)
+      end
+    end
   end
 end
