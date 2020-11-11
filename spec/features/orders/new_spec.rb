@@ -62,5 +62,19 @@ RSpec.describe("New Order Page") do
 
       expect(page).to have_content("Total: $142")
     end
+
+    it "I cannot delete an address on a new order page" do
+      visit "/cart"
+
+      within("#address-#{@home.id}") do
+        click_on "Select"
+      end
+
+      click_on "Checkout"
+
+      within('.address-card') do
+        expect(page).to_not have_link("Delete")
+      end
+    end
   end
 end

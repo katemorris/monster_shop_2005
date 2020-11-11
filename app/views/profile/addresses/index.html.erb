@@ -3,5 +3,13 @@
 <% @user.addresses.each do |address| %>
 <div id="address-<%= address.id %>">
   <%= render partial: "shared/address_card", locals: { address: address } %>
+  <% if address.has_no_shipped_orders? %>
+    <p>
+      <%= link_to "Edit", edit_profile_address_path(address) %> |
+      <%= link_to "Delete", profile_address_path(address), method: :delete %>
+    </p>
+  <% else %>
+    <p>This address cannot be edited.</p>
+  <% end %>
 </div>
 <% end %>
