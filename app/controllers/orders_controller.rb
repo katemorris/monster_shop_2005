@@ -11,18 +11,13 @@ class OrdersController <ApplicationController
   def create
     user = User.find(session[:user_id])
     map_address(session[:address].first)
-    order = user.orders.new(order_params)
-    if order.save
-      build_item_orders(order)
-      session.delete(:address)
-      session.delete(:cart)
-      session[:order_id] = order.id
-      flash[:success] = "Your order was successfully created!"
-      redirect_to "/profile/orders"
-    else
-      flash[:notice] = "Please complete address form to create an order."
-      render :new
-    end
+    order = user.orders.create(order_params)
+    build_item_orders(order)
+    session.delete(:address)
+    session.delete(:cart)
+    session[:order_id] = order.id
+    flash[:success] = "Your order was successfully created!"
+    redirect_to "/profile/orders"
   end
 
 

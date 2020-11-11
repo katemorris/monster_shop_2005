@@ -38,7 +38,7 @@ class UsersController < ApplicationController
     if @user.save
       flash[:success] = "Your profile is updated" if profile_update?
       flash[:success] = "Your password is updated" if password_update?
-      redirect_to profile_path
+      redirect_to "/profile"
     else
       flash[:error] = @user.errors.full_messages.to_sentence
       return redirect_to "/profile/edit?request=profile" if profile_update?

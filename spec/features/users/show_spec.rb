@@ -13,7 +13,7 @@ describe 'As a registered user' do
     end
 
     it "I am taken to my profile " do
-      expect(current_path).to eq(profile_path)
+      expect(current_path).to eq("/profile")
     end
 
     it "There are links perform actions." do

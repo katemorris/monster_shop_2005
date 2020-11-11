@@ -52,7 +52,7 @@ RSpec.describe "As a registered user", type: :feature do
 
       click_button "Update Profile"
 
-      expect(current_path).to eq(profile_path)
+      expect(current_path).to eq("/profile")
 
       expect(page).to have_content("Your profile is updated")
 
@@ -76,7 +76,7 @@ RSpec.describe "As a registered user", type: :feature do
       fill_in :password, with: 'password'
       click_button 'Login'
 
-      visit profile_path(user)
+      visit "/profile"
 
       click_link "Edit Password"
 
@@ -95,7 +95,7 @@ RSpec.describe "As a registered user", type: :feature do
 
       click_button "Update Password"
 
-      expect(current_path).to eq(profile_path)
+      expect(current_path).to eq("/profile")
       expect(page).to have_content("Your password is updated")
     end
 
@@ -109,7 +109,7 @@ RSpec.describe "As a registered user", type: :feature do
       fill_in :password, with: 'password'
       click_button 'Login'
 
-      visit profile_path(user2)
+      visit "/profile"
 
       click_link "Edit Profile Data"
 
